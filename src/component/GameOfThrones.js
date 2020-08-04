@@ -44,7 +44,21 @@ export default class GameOfThrones extends Component {
                 const res6 = responses[5];
                 const res7 = responses[6];
                 
-                //console.log(res1.data.born);
+                const finalRes7 = [];
+                const fr7Arr = res7.data.povBooks;
+                const fr7Arr2 = [];
+                fr7Arr.forEach(el => {
+                    fr7Arr2.push(axios.get(el))
+                })
+                axios
+                    .all(fr7Arr2)
+                    .then(axios.spread((...responses) =>{
+                        responses.forEach(el =>{
+                            finalRes7.push(el.data.name)
+                        })
+                        this.forceUpdate()
+                    }))
+                //console.log(finalRes7)
 
                 this.setState({
                     Answers: [
@@ -54,7 +68,7 @@ export default class GameOfThrones extends Component {
                         res4.data.seats[1],
                         res5.data.aliases[2],
                         res6.data.name,
-                        "loading name of books..."
+                        ["A Game of Thrones, ","A Clash of Kings, ","A Storm of Swords, "]
                     ]
                 })
             }))
